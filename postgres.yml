@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+
+  pg:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: changeme
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  pgAdmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    depends_on: 
+      - pg
+    ports:
+      - 54321:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pg.com
+      PGADMIN_DEFAULT_PASSWORD: changeme
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+    
